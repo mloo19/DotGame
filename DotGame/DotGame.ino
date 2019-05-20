@@ -1,5 +1,5 @@
 /*
-  GameProject.ino
+  DotGame.ino
   Marisa Loo
  
  Example file using the The Meggy Jr Simplified Library (MJSL)
@@ -42,20 +42,29 @@
 
 int x;
 int y;
+int wallx;
+int wally;
+int holey = random(8);
+boolean passed = false;
 
 void setup()                    // run once, when the sketch starts
 {
   MeggyJrSimpleSetup();      // Required code, line 2 of 2.
   x = 0;
-  y = 0;
+  y = 4;
+  wallx = 7;
 }
 
 void loop()
 {
   drawPlayer();
   movePlayer();
+  wall();
+  hole();
+  updateWall();
   DisplaySlate();
   ClearSlate();
+  pass();
 }
 
 void drawPlayer()
@@ -65,7 +74,7 @@ void drawPlayer()
 
 void movePlayer()
 {
-  CheckButtonsPress();
+  CheckButtonsDown();
   if (Button_Left)
   {
     if (x > 0)
@@ -93,5 +102,44 @@ void movePlayer()
     {
       y--;
     }
+  }
+}
+
+void wall()
+{
+  for (wally = 0; wally < 8; wally++)
+  {
+    DrawPx(wallx, wally, Green);
+  }
+  if (wallx == 0)
+  {
+    wallx = 7;
+  }
+}
+
+void hole()
+{
+  DrawPx(wallx, holey, Dark);
+}
+
+void updateWall()
+{
+  wallx = wallx - 1;
+  delay(150);
+}
+
+void pass()
+{
+  if (x == wallx && y == holey)
+  {
+    passed = true;
+  }
+  else
+  {
+    passed = false;
+  }
+  if (passed == true)
+  {
+    holey = random(8);
   }
 }
