@@ -75,20 +75,6 @@ void drawPlayer()
 void movePlayer()
 {
   CheckButtonsDown();
-  if (Button_Left)
-  {
-    if (x > 0)
-    {
-      x--;
-    }
-  }
-  if (Button_Right)
-  {
-    if (x < 7)
-    {
-      x++;
-    }
-  }
   if (Button_Up)
   {
     if (y < 7)
@@ -133,6 +119,7 @@ void pass()
   if (x == wallx && y == holey)
   {
     passed = true;
+    Tone_Start(ToneA3, 50);
   }
   else
   {
@@ -141,5 +128,17 @@ void pass()
   if (passed == true)
   {
     holey = random(8);
+  }
+}
+
+void Die()
+{
+  if (ReadPx(x, y) == Green)
+  {
+    //player is dead
+  }
+  else
+  {
+    //player is alive
   }
 }
