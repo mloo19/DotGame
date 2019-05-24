@@ -46,6 +46,7 @@ int wallx;
 int wally;
 int holey = random(8);
 boolean passed = false;
+int loops;
 
 void setup()                    // run once, when the sketch starts
 {
@@ -57,14 +58,21 @@ void setup()                    // run once, when the sketch starts
 
 void loop()
 {
-  drawPlayer();
-  movePlayer();
   wall();
   hole();
-  updateWall();
+  Die();
+  drawPlayer();
+  pass();
   DisplaySlate();
   ClearSlate();
-  pass();
+  movePlayer();
+  loops++;
+  if (loops % 600 == 0)
+  {
+    ClearSlate();
+    updateWall();
+    DisplaySlate();
+  }
 }
 
 void drawPlayer()
@@ -74,7 +82,7 @@ void drawPlayer()
 
 void movePlayer()
 {
-  CheckButtonsDown();
+  CheckButtonsPress();
   if (Button_Up)
   {
     if (y < 7)
@@ -97,7 +105,7 @@ void wall()
   {
     DrawPx(wallx, wally, Green);
   }
-  if (wallx == 0)
+  if (wallx == -1)
   {
     wallx = 7;
   }
@@ -111,7 +119,6 @@ void hole()
 void updateWall()
 {
   wallx = wallx - 1;
-  delay(150);
 }
 
 void pass()
@@ -133,12 +140,13 @@ void pass()
 
 void Die()
 {
-  if (ReadPx(x, y) == Green)
+  if (x == wallx && y != holey)
   {
-    //player is dead
-  }
-  else
-  {
-    //player is alive
+    ClearSlate();
+    x = 0;
+    y = 4;
+    wallx = 7;
+    DisplaySlate();
+    Tone_Start(ToneF3, 50);
   }
 }
